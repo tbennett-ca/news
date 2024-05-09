@@ -1,2 +1,2 @@
-# news
-News summarizer and text-to-speech
+# News Summarizer
+News summarizer and text-to-speech app
