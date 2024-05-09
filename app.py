@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 URL = "https://globalnews.ca/"
 MAX_ARTICLES = 5
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=3600, show_spinner=False)
 def get_stories():
     percentComplete = 0
     progressBar = st.progress(percentComplete, text="Finding stories...")
