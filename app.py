@@ -1,10 +1,10 @@
-from bs4 import BeautifulSoup
 from gtts import gTTS
 #import os
 import streamlit as st
 import requests
 from transformers import pipeline
 import time
+from bs4 import BeautifulSoup
 
 URL = "https://globalnews.ca/"
 MAX_ARTICLES = 5
