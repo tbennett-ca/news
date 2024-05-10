@@ -7,13 +7,8 @@ import time
 from bs4 import BeautifulSoup
 
 URL = "https://globalnews.ca/"
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 MAX_ARTICLES = 5
-
-#TODO: replace with API call?
-
-@st.cache_data
-def get_model():
-    return pipeline("summarization", model="facebook/bart-large-cnn")
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def get_stories():
@@ -59,7 +54,7 @@ def get_stories():
         
         if results is not None:
             paragraphs = " ".join([p.text for p in results.find_all("p")])
-            summary = summarizer(paragraphs, truncation=True)[0]['summary_text']
+            summary = get_summary(paragraphs)
             speech = gTTS(text=summary, lang='en', slow=False)
             fname = f"summary{i}.mp3"
             speech.save(fname)
@@ -70,11 +65,23 @@ def get_stories():
     progressBar.empty()
     return stories
 
+def get_summary(text, max_attempts=3):
+    headers = {"Authorization": f"Bearer {st.secrets["API_TOKEN"]}"}
+    attempts = 0
+
+    while attempts < max_attempts:
+        try:
+            response = requests.post(API_URL, headers=headers, json={"inputs": text})
+            return response.json()[0]['summary_text']
+        except:
+            attempts += 1
+
+    return "API temporarily unavailable"
+   
+
 if __name__ == "__main__":
     st.set_page_config(page_title="News Summarizer", page_icon="📰")
     st.title('News Summary')
-
-    summarizer = get_model()
 
     c = st.container()
 
