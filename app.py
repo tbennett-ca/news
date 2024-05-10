@@ -66,7 +66,8 @@ def get_stories():
     return stories
 
 def get_summary(text, max_attempts=3):
-    headers = {"Authorization": f"Bearer {st.secrets["API_TOKEN"]}"}
+    API_TOKEN = st.secrets["API_TOKEN"]
+    headers = {"Authorization": f"Bearer {API_TOKEN}"}
     attempts = 0
 
     while attempts < max_attempts:
