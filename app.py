@@ -9,6 +9,12 @@ from bs4 import BeautifulSoup
 URL = "https://globalnews.ca/"
 MAX_ARTICLES = 5
 
+#TODO: replace with API call?
+
+@st.cache_data
+def get_model():
+    return pipeline("summarization", model="facebook/bart-large-cnn")
+
 @st.cache_data(ttl=3600, show_spinner=False)
 def get_stories():
     percentComplete = 0
@@ -68,7 +74,7 @@ if __name__ == "__main__":
     st.set_page_config(page_title="News Summarizer", page_icon="📰")
     st.title('News Summary')
 
-    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+    summarizer = get_model()
 
     c = st.container()
 
