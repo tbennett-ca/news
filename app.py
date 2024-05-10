@@ -77,7 +77,7 @@ def get_summary(text, max_attempts=3):
         except:
             attempts += 1
 
-    return "API temporarily unavailable"
+    return ""
    
 
 if __name__ == "__main__":
@@ -88,11 +88,12 @@ if __name__ == "__main__":
 
     stories = get_stories()
 
-    for article in stories:   
-        c1, c2, c3 = c.columns(3)
-        c1.image(article['thumb'])
-        c1.write(f"**{article['hl']}**")
-        c2.write(article['summary'])
-        c3.audio(article['file'], format="audio/mp3")
+    for article in stories:
+        if len(article['summary']) > 0:
+            c1, c2, c3 = c.columns(3)
+            c1.image(article['thumb'])
+            c1.write(f"**{article['hl']}**")
+            c2.write(article['summary'])
+            c3.audio(article['file'], format="audio/mp3")
 
     st.markdown("Source: [*Globalnews.ca*](https://globalnews.ca/)")
