@@ -55,10 +55,11 @@ def get_stories():
         if results is not None:
             paragraphs = " ".join([p.text for p in results.find_all("p")])
             summary = get_summary(paragraphs)
-            speech = gTTS(text=summary, lang='en', slow=False)
-            fname = f"summary{i}.mp3"
-            speech.save(fname)
-            stories.append({"hl": headlines[i], "summary": summary, "file": fname, "thumb": thumbnails[i]})
+            if len(summary) > 0:
+                speech = gTTS(text=summary, lang='en', slow=False)
+                fname = f"summary{i}.mp3"
+                speech.save(fname)
+                stories.append({"hl": headlines[i], "summary": summary, "file": fname, "thumb": thumbnails[i]})
 
     progressBar.progress(0.99, text=f"Done!")
     time.sleep(1)
